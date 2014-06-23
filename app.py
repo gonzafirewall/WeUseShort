@@ -1,4 +1,5 @@
 from flask import Flask, redirect, render_template
+from flask import request
 from flask_redis import Redis
 import short_url
 from forms import ShorterForm
@@ -11,30 +12,28 @@ from flask_bootstrap import Bootstrap
 
 Bootstrap(app)
 
-app.config['SECRET_KEY'] = 'devkey'
+app.config['SECRET_KEY'] = 'Si buscas resultados distintos, no hagas siempre lo mismo.'
 
 @app.route("/")
 def index():
     return render_template('index.j2')
 
-
-@app.route("/admin/add/<url>")
-def admin_add(url):
-    if redis_store.get(url):
-        url_short = redis_store.get(url)
-        return "http://" + app.config['DOMAIN'] + "/"+ url_short
-    url_id = redis_store.incr('url:id')
-    url_short = short_url.encode_url(url_id)
-    redis_store.set(url_short, url)
-    redis_store.persist(url_short)
-    redis_store.set(url, url_short)
-    redis_store.persist(url)
-    return "http://" + app.config['DOMAIN'] + "/"+ url_short
-
-
-@app.route("/admin/")
+@app.route("/admin/", methods=['GET', 'POST'])
 def admin():
     form = ShorterForm()
+    if form.validate_on_submit():
+        url = request.form['url']
+        if redis_store.get(url):
+            url_short = redis_store.get(url)
+        else:
+            url_id = redis_store.incr('url:id')
+            url_short = short_url.encode_url(url_id)
+            redis_store.set(url_short, url)
+            redis_store.persist(url_short)
+            redis_store.set(url, url_short)
+            redis_store.persist(url)
+        url_full = "http://" + app.config['DOMAIN'] + "/" + url_short
+        return render_template('success.j2', url_full=url_full)
     return render_template('admin.j2', form=form)
 
 

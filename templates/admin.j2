@@ -4,6 +4,12 @@
 {% block content %}
 <div class="container">
     <h1>Admin</h1>
-    {{ wtf.quick_form(form, form_type='inline', button_map={'submit_button': 'primary'}) }}
+    <form class="form form-horizontal" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        {{ wtf.form_field(form.url) }}
+        {{ wtf.form_field(form.submit_button) }}
+    </form>
+
 </div>
 {% endblock %}

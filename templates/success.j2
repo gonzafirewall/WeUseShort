@@ -1,0 +1,9 @@
+{% extends 'base.j2'%}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<div class="container">
+    <h1>Created Short URL</h1>
+    <a href="{{ url_full }}">{{url_full}}</a>
+</div>
+{% endblock %}
