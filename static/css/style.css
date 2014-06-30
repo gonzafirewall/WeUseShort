@@ -1,3 +1,11 @@
 .navbar {
     position: relative;
 }
+
+#submit_button {
+    width: 200px;
+    transition: width 0.5s;
+}
+#submit_button:hover {
+    width: 100px;
+}
