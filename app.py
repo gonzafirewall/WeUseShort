@@ -60,7 +60,7 @@ def logout():
 
 @app.route("/<hash>")
 def shorter(hash):
-    return redirect("http://%s" % redis_store.get(hash))
+    return redirect(redis_store.get(hash))
 
 @app.route('/static/<path:filename>')
 def send_foo(filename):
