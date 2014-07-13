@@ -1,9 +1,20 @@
-{% extends "bootstrap/base.html" %}
-{% block title %}WeUseShort is an app that short urls{% endblock %}
-{% block styles %}
-    <link rel="stylesheet" href="http://bootswatch.com/darkly/bootstrap.min.css"> 
-    <link rel="stylesheet" href="/static/css/style.css">
-{% endblock%}
+<!DOCTYPE html>
+<html lang="en" ng-app="wusApp">
+<head>
+    <meta charset="UTF-8">
+    {% block styles %}
+        <link rel="stylesheet" href="http://bootswatch.com/darkly/bootstrap.min.css"> 
+        <link rel="stylesheet" href="/static/css/style.css">
+        <script src="/static/bower_components/angular/angular.js"></script>
+        <script src="/static/bower_components/angular-route/angular-route.js"></script>
+        <script src="/static/js/app.js"></script>
+        <script src="/static/js/controller.js"></script>
+    {% endblock%}
+    <title>
+        {% block title %}WeUseShort is an app that short urls{% endblock %}
+    </title>
+</head>
+<body ng-controller="mainCtrl as main">
 {% block navbar %}
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
@@ -19,13 +30,15 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            {% if not session.username %}
-                <li class=""><a href="{{ url_for('login') }}">Login</a></li>
-            {% else %}
-                <li class=""><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% endif %}
+            <li ng-hide="user.id" class=""><a href="#/login">Login</a></li>
+            <li ng-show="user.id" class=""><a href="#" ng-click='logout()'>Logout</a></li>
           </ul>
         </div>
     </div>
 </div>
 {% endblock %}
+{% block content %} 
+{% endblock %}
+</body>
+</html>
+
