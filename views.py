@@ -40,9 +40,13 @@ def getUrls():
     keys = redis_store.keys('http*')
     for key in keys:
         val = redis_store.get(key)
+        hit_count = redis_store.get(val + '_hits')
         urls.append(
             {'url': key,
-             'shortUrl': 'http://%s/%s' % (app.config['DOMAIN'], val)})
+             'shortUrl': 'http://{domain}/{shortUrl}'.format(
+                 domain=app.config['DOMAIN'],
+                 shortUrl=val),
+             'hits': hit_count})
     return json.dumps(urls)
 
 
@@ -65,6 +69,7 @@ def logout():
 
 @app.route("/<hash>")
 def shorter(hash):
+    redis_store.incr(hash + '_hits')
     return redirect(redis_store.get(hash))
 
 @app.route('/static/<path:filename>')

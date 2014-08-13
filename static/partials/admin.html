@@ -14,12 +14,16 @@
         <tr>
           <th>Url</th>
           <th>Shorter Url</th>
+          <th>Hits</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="s in shorters">
           <td>{{ s.url }} </td>
-          <td>{{ s.shortUrl }} </td>
+          <td>
+            <a href="{{ s.shortUrl }}">{{s.shortUrl }}</a>
+          </td>
+          <td>{{ s.hits }}</td>
         </tr>
       </tbody>
     </table>
